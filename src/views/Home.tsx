@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 type DashboardData = {
     stats: {
@@ -18,6 +19,7 @@ export function Home() {
 
     const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(false);
 
 
     const loadDashboard = async () => {
@@ -32,18 +34,18 @@ export function Home() {
 
             const data = await response.json();
 
-            // Vérification des données
             if (!data.stats || !data.goals) {
                 throw new Error("Données manquantes");
             }
 
-            // Mise à jour du state
             setDashboardData(data);
             setIsLoading(false);
 
         } catch (error) {
-            console.log(error);
-            Alert.alert("Erreur", "Une erreur réseau s'est produite");
+            setError(true);
+
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -51,36 +53,59 @@ export function Home() {
         loadDashboard();
     }, []);
 
+    if (error) {
+        return (
+            <SafeAreaView style={[styles.container, { justifyContent: 'center', alignItems: 'center', padding: 20 }]}>
+
+                <Text style={{ textAlign: 'center', fontSize: 16, marginBottom: 20 }}>Impossible de récupérer vos données sportives. Vérifiez votre connexion et réessayez.</Text>
+
+                <TouchableOpacity
+                    style={styles.btnRetry}
+                    onPress={loadDashboard}
+                >
+                    <Text style={{ color: 'white', fontWeight: '600', fontSize: 16 }}>Réessayer</Text>
+                </TouchableOpacity>
+            </SafeAreaView>
+        );
+    }
+
     if (isLoading || !dashboardData) {
-        return <ActivityIndicator size="large" color="#538D4E" />;
+        return (
+            <SafeAreaView
+                style={[styles.container, { justifyContent: 'center', gap: 8 }]}
+            >
+                <ActivityIndicator size="large" color="#119B4A" />
+                <Text style={[{ textAlign: 'center' }]}>Chargement de votre activité...</Text>
+            </SafeAreaView>
+        );
     }
 
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.appTitle}>Goals</Text>
-            <Text style={styles.descriptionPage}>Continuez vos efforts !</Text>
+            <Text style={styles.descriptionPage}>Continuez vos efforts ! 💪</Text>
 
             <View>
                 <Text style={styles.title}>Mes statistiques</Text>
 
                 <View style={styles.statContainer}>
                     <View style={styles.statCardContainer}>
-                        <View style={styles.iconContainer}></View>
+                        <View style={styles.iconContainer}><Icon name="shoe-sneaker" color='#119B4A' size={30} /></View>
                         <Text style={styles.stat}>{dashboardData.stats.sessions}</Text>
                         <Text style={styles.statUnite}>séances</Text>
                         <Text style={styles.statText}>Total réalisé</Text>
                     </View>
 
                     <View style={styles.statCardContainer}>
-                        <View style={styles.iconContainer}></View>
-                        <Text style={styles.stat}>{dashboardData.stats.spentTime}</Text>
+                        <View style={[styles.iconContainer, { backgroundColor: '#E9EEFC' }]}><Icon name="clock-time-four-outline" color='#166CFD' size={30} /></View>
+                        <Text style={[styles.stat, { color: '#166CFD' }]}>{dashboardData.stats.spentTime}</Text>
                         <Text style={styles.statUnite}>minutes</Text>
                         <Text style={styles.statText}>Temps total</Text>
                     </View>
 
                     <View style={styles.statCardContainer}>
-                        <View style={styles.iconContainer}></View>
-                        <Text style={styles.stat}>{dashboardData.stats.kcal}</Text>
+                        <View style={[styles.iconContainer, { backgroundColor: '#FEEDE0' }]}><Icon name="fire" color='#FD660B' size={30} /></View>
+                        <Text style={[styles.stat, { color: '#FD660B' }]}>{dashboardData.stats.kcal}</Text>
                         <Text style={styles.statUnite}>kcal</Text>
                         <Text style={styles.statText}>Calories brûlées</Text>
                     </View>
@@ -91,7 +116,7 @@ export function Home() {
                 <Text style={styles.title}>Mes objectifs</Text>
 
                 <View style={styles.containerObjectif}>
-                    {dashboardData.goals.map((goal, index) => (
+                    {/* {dashboardData.goals.map((goal, index) => (
                         <View key={index} style={styles.cardObjectif}>
                             <View style={styles.iconContainer}></View>
                             <View style={styles.objectifContainerText}>
@@ -100,11 +125,32 @@ export function Home() {
                             </View>
                             <View></View>
                         </View>
-                    ))}
-                </View>
+                    ))} */}
+                    <View style={styles.cardObjectif}>
+                        <View style={styles.cardContainer}>
+                            <View style={[styles.iconContainer, { backgroundColor: '#FEEDE0' }]}><Icon name="calendar-blank" color='#FD660B' size={30} /></View>
+                            <View style={styles.objectifContainerText}>
+                                <Text style={styles.objectifTitle}>{dashboardData.goals[0].title}</Text>
+                                <Text style={styles.objectifDescription}>{dashboardData.goals[0].target}</Text>
+                            </View>
+                        </View>
+                        <Icon name="greater-than" color='#666' size={20} style={[{ alignSelf: 'center' }]} />
 
+                    </View>
+
+                    <View style={styles.cardObjectif}>
+                        <View style={styles.cardContainer}>
+                            <View style={styles.iconContainer}><Icon name="bullseye-arrow" color='#119B4A' size={30} /></View>
+                            <View style={styles.objectifContainerText}>
+                                <Text style={styles.objectifTitle}>{dashboardData.goals[1].title}</Text>
+                                <Text style={styles.objectifDescription}>{dashboardData.goals[1].target}</Text>
+                            </View>
+                        </View>
+                        <Icon name="greater-than" color='#666' size={20} style={[{ alignSelf: 'center' }]} />
+                    </View>
+                </View>
             </View>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 }
 
@@ -114,12 +160,17 @@ const styles = StyleSheet.create({
         gap: 10,
         paddingHorizontal: 20,
     },
-    appTitle:{
-        fontSize: 24,
+    btnRetry: {
+        backgroundColor: '#119B4A',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+    },
+    appTitle: {
+        fontSize: 32,
         fontWeight: 'bold',
     },
     descriptionPage: {
-        marginTop: 20,
         marginBottom: 20,
         fontSize: 16,
         color: '#666',
@@ -157,7 +208,7 @@ const styles = StyleSheet.create({
     },
     stat: {
         color: '#119B4A',
-        fontSize: 30,
+        fontSize: 24,
         fontWeight: 'bold',
     },
     statUnite: {
@@ -179,6 +230,10 @@ const styles = StyleSheet.create({
         borderColor: '#E0E0E0',
         backgroundColor: '#F9F9F9',
         padding: 15,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    cardContainer: {
         flexDirection: 'row',
         gap: 20,
         alignItems: 'center',

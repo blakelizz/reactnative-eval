@@ -1,7 +1,8 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ProfileHeader } from "../components/ProfileHeader";
 import { ProfileInfo } from "../components/ProfileInfo";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function Profile() {
 
@@ -27,17 +28,14 @@ export function Profile() {
 
             <ProfileInfo user={user} />
 
-            <View>
-                <View></View>
-                <View style={styles.cardMotivation}>
-                    <View style={styles.iconCardMotivation}></View>
-                    <View>
-                        <Text style={styles.textBold}>Continuez vos efforts !</Text>
-                        <Text style={styles.descriptionCardMotivation}>Chaque séance vous rapproche de vos objectifs.</Text>
-                    </View>
-                    <View style={styles.iconCardMotivation}></View>
+            <TouchableOpacity style={styles.cardMotivation}>
+                <Icon name="trophy" color='#119B4A' size={40} />
+                <View>
+                    <Text style={styles.textBold}>Continuez vos efforts !</Text>
+                    <Text style={styles.descriptionCardMotivation}>Chaque séance vous rapproche de vos objectifs.</Text>
                 </View>
-            </View>
+                <Icon name="greater-than" color='#119B4A' size={20} style={[ {alignSelf:'center'} ]} />
+            </TouchableOpacity>
 
         </SafeAreaView>
     );
@@ -46,16 +44,16 @@ export function Profile() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        gap: 10,
         paddingHorizontal: 20,
     },
     appTitle: {
-        fontSize: 24,
+        fontSize: 32,
         fontWeight: 'bold',
     },
     title: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 20,
     },
     cardMotivation: {
         backgroundColor: '#EEF9F3',
@@ -63,11 +61,8 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 20,
-    },
-    iconCardMotivation: {
-        width: 50,
-        height: 50,
+        marginTop: 10,
+        justifyContent: 'space-between',
     },
     textBold: {
         fontWeight: 'bold',

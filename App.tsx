@@ -10,6 +10,7 @@ import { StatusBar } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Home } from './src/views/Home';
 import { Profile } from './src/views/Profile';
 
@@ -38,20 +39,26 @@ function AppContent() {
             headerShown: false,
             tabBarInactiveTintColor: '#818181',
             tabBarActiveTintColor: '#119B4A',
-            tabBarStyle: {  height: 60, },
+            tabBarStyle: {  height: 80, },
           }}
         >
           <Tab.Screen
             options={{
               tabBarLabel: 'Accueil',
+              tabBarIcon: ({ color, size }) => (
+                <Icon name="home" color={color} size={size} />
+              ),
             }}
             name="Home"
             component={Home}
           />
           <Tab.Screen
-            options={
-              { tabBarLabel: 'Profil' }
-            }
+            options={{
+              tabBarLabel: 'Profil',
+              tabBarIcon: ({ color, size }) => (
+                <Icon name="account" color={color} size={size} />
+              ),
+            }}
             name="Profile"
             component={Profile}
           />

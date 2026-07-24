@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export function ProfileHeader({ user }: { user: any }) {
 
@@ -9,54 +10,54 @@ export function ProfileHeader({ user }: { user: any }) {
                 <Text style={styles.profileName}>{user.name}</Text>
                 <Text style={styles.profileMotivation}>{user.categorie}</Text>
                 <Text style={styles.profileDescription}>{user.description}</Text>
-                <View style={styles.modifierBtn}>
-                    <Text style={styles.modifierBtnText}>Modifier</Text>
-                </View>
+                <TouchableOpacity style={styles.modifierBtn}>
+                    <Text style={styles.modifierBtnText}>
+                        <Icon name="pencil" color="#119B4A" size={15} /> Modifier
+                    </Text>
+                </TouchableOpacity>
             </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    headerContainer:{
+    headerContainer: {
         flexDirection: 'row',
-        // alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 15,
     },
-    infoProfileContainer:{
+    infoProfileContainer: {
         flexDirection: 'column',
-        marginLeft: 10,
+        marginLeft: 20,
         gap: 5,
     },
-    image:{
+    image: {
         width: 120,
         height: 120,
         borderRadius: 100,
     },
-    profileName:{
+    profileName: {
         fontWeight: 'bold',
-        fontSize: 20    ,
+        fontSize: 20,
     },
-    profileMotivation:{
+    profileMotivation: {
         fontSize: 14,
         color: '#119B4A',
     },
-    profileDescription:{
+    profileDescription: {
         fontSize: 14,
         color: '#666',
         width: 200,
     },
-    modifierBtn:{
+    modifierBtn: {
         borderColor: '#119B4A',
         borderWidth: 1,
-        paddingVertical: 5,
-        paddingHorizontal: 20,
+        padding: 5,
         borderRadius: 10,
         width: 100,
         marginTop: 5,
     },
-    modifierBtnText:{
+    modifierBtnText: {
         color: '#119B4A',
         textAlign: 'center',
-    }, 
+    },
 })
