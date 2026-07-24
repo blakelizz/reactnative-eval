@@ -19,7 +19,11 @@ export function Profile() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.appTitle}>Goals</Text>
+            
+            <View style={styles.containerTitle}>
+                <Text style={styles.appTitle}>Goals</Text>
+                <Icon name="settings-helper" color='#119B4A' size={35} />
+            </View>
             <Text style={styles.title}>Mon profil</Text>
 
             <ProfileHeader user={user} />
@@ -50,6 +54,10 @@ const styles = StyleSheet.create({
     appTitle: {
         fontSize: 32,
         fontWeight: 'bold',
+    },
+    containerTitle:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     title: {
         fontSize: 18,

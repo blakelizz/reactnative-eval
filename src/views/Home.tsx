@@ -82,7 +82,10 @@ export function Home() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.appTitle}>Goals</Text>
+            <View style={styles.containerTitle}>
+                <Text style={styles.appTitle}>Goals</Text>
+                <Icon name="account-circle-outline" color='#119B4A' size={35} />
+            </View>
             <Text style={styles.descriptionPage}>Continuez vos efforts ! 💪</Text>
 
             <View>
@@ -169,6 +172,10 @@ const styles = StyleSheet.create({
     appTitle: {
         fontSize: 32,
         fontWeight: 'bold',
+    },
+    containerTitle: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     descriptionPage: {
         marginBottom: 20,
