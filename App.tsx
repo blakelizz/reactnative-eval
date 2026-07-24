@@ -5,34 +5,58 @@
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StatusBar } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Home } from './src/views/Home';
+import { Profile } from './src/views/Profile';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar/>
       <AppContent />
     </SafeAreaProvider>
   );
 }
 
+type RootTabParamsList = {
+  Home: undefined;
+  Profile: undefined;
+};
+
 function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+  const Tab = createBottomTabNavigator<RootTabParamsList>();
 
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+      <NavigationContainer >
+        <Tab.Navigator
+          screenOptions={{
+            headerShown: false,
+            tabBarInactiveTintColor: '#818181',
+            tabBarActiveTintColor: '#119B4A',
+            tabBarStyle: {  height: 60, },
+          }}
+        >
+          <Tab.Screen
+            options={{
+              tabBarLabel: 'Accueil',
+            }}
+            name="Home"
+            component={Home}
+          />
+          <Tab.Screen
+            options={
+              { tabBarLabel: 'Profil' }
+            }
+            name="Profile"
+            component={Profile}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
   );
 }
 
